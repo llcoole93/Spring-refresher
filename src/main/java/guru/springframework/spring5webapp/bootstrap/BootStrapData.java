@@ -24,43 +24,43 @@ public class BootStrapData implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Author eric = new Author("eric", "Evans");
-        Book ddd = new Book("fuck it", "fuck it");
+        System.out.println("Started in Bootstrap");
 
+        Publisher publisher = new Publisher();
+        publisher.setName("SFG Publishing");
+        publisher.setCity("St Petersburg");
+        publisher.setState("FL");
+
+        publisherRepository.save(publisher);
+
+        System.out.println("Publisher Count: " + publisherRepository.count());
+
+        Author eric = new Author("Eric", "Evans");
+        Book ddd = new Book("Domain Driven Design", "123123");
         eric.getBooks().add(ddd);
         ddd.getAuthors().add(eric);
 
+        ddd.setPublisher(publisher);
+        publisher.getBooks().add(ddd);
+
         authorRepository.save(eric);
         bookRepository.save(ddd);
+        publisherRepository.save(publisher);
 
-        Author rod = new Author("Evan", "rod");
-        Book book = new Book("Evan and rods book", "not duck it");
-        rod.getBooks().add(book);
-        book.getAuthors().add(rod);
+        Author rod = new Author("Rod", "Johnson");
+        Book noEJB = new Book("J2EE Development without EJB", "3939459459");
+        rod.getBooks().add(noEJB);
+        noEJB.getAuthors().add(rod);
 
-        authorRepository.save(rod);
-        bookRepository.save(book);
-
-        // publisher data demo
-        //    String city, String address, String state, String zip
-
-        Publisher pub = new Publisher("Cincinnati", "151 west 7th street", "OH", "45215");
-        publisherRepository.save(pub);
-
-        ddd.setPublisher(pub);
-        pub.getBooks().add(ddd);
+        noEJB.setPublisher(publisher);
+        publisher.getBooks().add(noEJB);
 
         authorRepository.save(rod);
-        bookRepository.save(ddd);
-        publisherRepository.save(pub);
+        bookRepository.save(noEJB);
+        publisherRepository.save(publisher);
 
-        System.out.println(publisherRepository.findAll());
-        System.out.println(pub.getBooks().size());
-
-        System.out.println("started in repo");
-        System.out.println("number of books" + bookRepository.count());
-        System.out.println("number of authors" + authorRepository.count());
-        System.out.println("publishers count is " + publisherRepository.count() + ", and the object is" + publisherRepository.findById(new Long(5)));
+        System.out.println("Number of Books: " + bookRepository.count());
+        System.out.println("Publisher Number of Books: " + publisher.getBooks().size());
 
 
     }
